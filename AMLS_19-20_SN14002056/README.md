@@ -17,6 +17,7 @@ Please install these dependencies:
 pandas
 numpy
 scikit-learn
+cv2
 skimage
 
 ### Run
