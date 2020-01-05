@@ -11,7 +11,6 @@ from sklearn.preprocessing import StandardScaler
 from skimage import color
 
 from skimage.feature import hog
-from skimage.io import imread
 from skimage.transform import rescale
 
 
@@ -24,7 +23,6 @@ class DataPreprocessing:
     def get_raw_dataframe(self, path, dataset):
         return pd.read_csv(self.path + '/Datasets/original_dataset_AMLS_19-20/' + self.dataset + '/labels.csv', sep='\t')
 
-            
     def convert_img_to_vec(self, img_file):
         img = cv2.imread(img_file, cv2.IMREAD_UNCHANGED)
         return img
@@ -45,7 +43,6 @@ class DataPreprocessing:
                 
             return vec_Array
         
-        
         if self.dataset == 'cartoon_set':
             print("----------------------------------------------------")
             print("Converting raw images to pixel info in Cartoon dataset...")
@@ -55,39 +52,7 @@ class DataPreprocessing:
                 vec_Array.append(img_vec)
         
             return vec_Array
-        
-    
-    
-    def rgb2grayscale(self, rgb_array):
-        
-        """convert the RGB pixel information into grayscale"""
-        
-        return np.array([color.rgb2gray(img) for img in rgb_array])
-        
-        
-    
-        
-    def HOG_Transform():
-        
-        """ HOG transform as one of the choices to select features """
-        
-        vector_array = self.df_to_vec(self.path, self.dataset)
 
-        
-        return vec_Array
-    
-    
-    
-    def PCA_Transform():
-        
-        """ PCA transform to select features as a comparison """
-        
-        vector_array = self.df_to_vec(self.path, self.dataset)
-
-        
-        return vec_Array
-    
-    
         
     def split_train_val_test(self, task):
         
@@ -124,3 +89,53 @@ class DataPreprocessing:
         test_data = (x_test, y_test)
         
         return train_data, val_data, test_data
+
+    
+class Rgb2Grayscale:
+    
+    def __init__(self):
+        pass
+    
+    
+    def transform(self, rgb_array):
+        
+        """convert the RGB channel pixel features into single grayscale channel"""
+        
+        return np.array([color.rgb2gray(img) for img in rgb_array])
+
+
+class HogTransform:
+    
+    def __init__(self, orientations=9, pixels_per_cell=(8, 8), cells_per_block=(3, 3), block_norm='L2-Hys'):
+        
+        """ HOG transform as one of the choices for feature extraction. Takes a grayscale image vector as the input """
+        
+        self.orientations = orientations
+        self.pixels_per_cell = pixels_per_cell
+        self.cells_per_block = cells_per_block
+        self.block_norm = block_norm
+    
+    def transform(self, gray_vector):
+        
+        print("-----------------------------------------------")
+        print("Transforming each image to extract HOG features")
+        print("-----------------------------------------------")
+
+        def local_hog(gray_vector):
+            return hog(gray_vector,
+                       orientations=self.orientations,
+                       pixels_per_cell=self.pixels_per_cell,
+                       cells_per_block=self.cells_per_block,
+                       block_norm=self.block_norm)
+
+        try: # parallel
+            return np.array([local_hog(img) for img in gray_vector])
+        except:
+            return np.array([local_hog(img) for img in gray_vector])
+        
+        
+
+class PCATransform:
+    
+    def __init__(self):
+        pass
