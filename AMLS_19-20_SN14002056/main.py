@@ -32,8 +32,8 @@ emotion_data_train, emotion_data_val, emotion_data_test = celeb_data.split_train
 
 print(gender_data_train[0])
 print(gender_data_train[1])
-print(emotion_data_train[0])
-print(emotion_data_train[1])
+# print(emotion_data_train[0])
+# print(emotion_data_train[1])
 
 # print(cartoon_eye_train[1])
 # print(cartoon_face_train[1])
@@ -77,7 +77,3 @@ print(emotion_data_train[1])
 #                                                         acc_A2_train, acc_A2_test,
 #                                                         acc_B1_train, acc_B1_test,
 #                                                         acc_B2_train, acc_B2_test))
-
-# If you are not able to finish a task, fill the corresponding variable with 'TBD'. For example:
-# acc_A1_train = 'TBD'
-# acc_A1_test = 'TBD'

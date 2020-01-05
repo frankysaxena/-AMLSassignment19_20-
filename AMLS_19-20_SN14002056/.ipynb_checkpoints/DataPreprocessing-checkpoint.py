@@ -45,14 +45,31 @@ class DataPreprocessing:
         
             return vec_Array
         
+        
+    def HOG_Transform():
+        vector_array = self.df_to_vec(self.path, self.dataset)
+
+        
+        return vec_Array
+    
+    
+    
+    def PCA_Transform():
+        vector_array = self.df_to_vec(self.path, self.dataset)
+
+        
+        return vec_Array
+    
+    
+        
     def split_train_val_test(self, task):
         
-        df = self.get_raw_dataframe(self.path, self.dataset)
         vector_array = self.df_to_vec(self.path, self.dataset)
+        df = self.get_raw_dataframe(self.path, self.dataset)
 
         x_dataset = vector_array
         y_dataset = np.array(df[str(task)])
-        
+
         print("Fetching data for the " + task + " task")
         print("Length of input pixel list: " + str(len(x_dataset)))
         print("Length of output labels list: " + str(len(y_dataset)))
