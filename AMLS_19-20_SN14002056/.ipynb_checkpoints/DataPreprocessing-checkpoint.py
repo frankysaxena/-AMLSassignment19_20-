@@ -3,6 +3,17 @@ import pandas as pd
 import cv2
 import numpy as np
 
+from sklearn.base import BaseEstimator, TransformerMixin
+
+from sklearn.linear_model import SGDClassifier
+from sklearn.model_selection import cross_val_predict
+from sklearn.preprocessing import StandardScaler
+from skimage import color
+
+from skimage.feature import hog
+from skimage.io import imread
+from skimage.transform import rescale
+
 
 class DataPreprocessing:
     
@@ -45,8 +56,21 @@ class DataPreprocessing:
         
             return vec_Array
         
+    
+    
+    def rgb2grayscale(self, rgb_array):
+        
+        """convert the RGB pixel information into grayscale"""
+        
+        return np.array([color.rgb2gray(img) for img in rgb_array])
+        
+        
+    
         
     def HOG_Transform():
+        
+        """ HOG transform as one of the choices to select features """
+        
         vector_array = self.df_to_vec(self.path, self.dataset)
 
         
@@ -55,6 +79,9 @@ class DataPreprocessing:
     
     
     def PCA_Transform():
+        
+        """ PCA transform to select features as a comparison """
+        
         vector_array = self.df_to_vec(self.path, self.dataset)
 
         

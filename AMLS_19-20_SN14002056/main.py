@@ -30,8 +30,12 @@ emotion_data_train, emotion_data_val, emotion_data_test = celeb_data.split_train
 # cartoon_eye_train, cartoon_eye_val, cartoon_eye_test =  cartoon_data.split_train_val_test(eye)
 # cartoon_face_train, cartoon_face_val, cartoon_face_test =  cartoon_data.split_train_val_test(face)
 
-print(gender_data_train[0])
-print(gender_data_train[1])
+
+gray_array = celeb_data.rgb2grayscale(gender_data_train[0])
+print(gray_array)
+
+
+# print(gender_data_train[1])
 # print(emotion_data_train[0])
 # print(emotion_data_train[1])
 
