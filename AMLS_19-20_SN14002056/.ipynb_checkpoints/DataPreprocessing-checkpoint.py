@@ -80,5 +80,3 @@ class DataPreprocessing:
         test_data = (x_test, y_test)
         
         return train_data, val_data, test_data
-    
-    def get_file_with_label(self, )

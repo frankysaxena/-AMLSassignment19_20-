@@ -27,16 +27,16 @@ cartoon_data = DataPreprocessing(path_to_dir, cartoon)
 gender_data_train, gender_data_val, gender_data_test = celeb_data.split_train_val_test(gender)
 emotion_data_train, emotion_data_val, emotion_data_test = celeb_data.split_train_val_test(emotion)
 
-cartoon_eye_train, cartoon_eye_val, cartoon_eye_test =  cartoon_data.split_train_val_test(eye)
-cartoon_face_train, cartoon_face_val, cartoon_face_test =  cartoon_data.split_train_val_test(face)
+# cartoon_eye_train, cartoon_eye_val, cartoon_eye_test =  cartoon_data.split_train_val_test(eye)
+# cartoon_face_train, cartoon_face_val, cartoon_face_test =  cartoon_data.split_train_val_test(face)
 
-
+print(gender_data_train[0])
 print(gender_data_train[1])
+print(emotion_data_train[0])
 print(emotion_data_train[1])
 
-print(cartoon_eye_train[1])
-print(cartoon_face_train[1])
-
+# print(cartoon_eye_train[1])
+# print(cartoon_face_train[1])
 
 
 # # ======================================================================================================================
