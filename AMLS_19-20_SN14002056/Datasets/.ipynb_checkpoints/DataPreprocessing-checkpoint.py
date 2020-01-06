@@ -6,6 +6,8 @@ import numpy as np
 from sklearn.base import BaseEstimator, TransformerMixin
 
 from sklearn.linear_model import SGDClassifier
+from sklearn.decomposition import PCA
+
 from sklearn.model_selection import cross_val_predict
 from sklearn.preprocessing import StandardScaler
 from skimage import color
@@ -54,7 +56,7 @@ class DataPreprocessing:
             return vec_Array
 
         
-    def split_train_val_test(self, task):
+    def split_train_test(self, task):
         
         vector_array = self.df_to_vec(self.path, self.dataset)
         df = self.get_raw_dataframe(self.path, self.dataset)
@@ -75,47 +77,44 @@ class DataPreprocessing:
             shuffle=True,
             random_state=42,
         )
-            
-        x_train, x_val, y_train, y_val = train_test_split(
-            x,
-            y,
-            test_size=0.25,
-            shuffle=True,
-            random_state=42,
-        )
         
-        train_data = (x_train, y_train)
-        val_data = (x_val, y_val)
+        train_data = (x, y)
         test_data = (x_test, y_test)
         
-        return train_data, val_data, test_data
+        return train_data, test_data
 
     
-class Rgb2Grayscale:
+class Rgb2Grayscale(BaseEstimator, TransformerMixin):
     
     def __init__(self):
         pass
     
+    def fit(self, X, y=None):
+        """returns itself"""
+        return self
     
-    def transform(self, rgb_array):
+    def transform(self, rgb_array, y=None):
         
         """convert the RGB channel pixel features into single grayscale channel"""
         
         return np.array([color.rgb2gray(img) for img in rgb_array])
 
 
-class HogTransform:
+class HogTransform(BaseEstimator, TransformerMixin):
     
-    def __init__(self, orientations=9, pixels_per_cell=(8, 8), cells_per_block=(3, 3), block_norm='L2-Hys'):
+    def __init__(self, y=None, orientations=9, pixels_per_cell=(8, 8), cells_per_block=(3, 3), block_norm='L2-Hys'):
         
         """ HOG transform as one of the choices for feature extraction. Takes a grayscale image vector as the input """
-        
+        self.y = y
         self.orientations = orientations
         self.pixels_per_cell = pixels_per_cell
         self.cells_per_block = cells_per_block
         self.block_norm = block_norm
     
-    def transform(self, gray_vector):
+    def fit(self, X, y=None):
+        return self
+    
+    def transform(self, gray_vector, y=None):
         
         print("-----------------------------------------------")
         print("Transforming each image to extract HOG features")
@@ -133,9 +132,4 @@ class HogTransform:
         except:
             return np.array([local_hog(img) for img in gray_vector])
         
-        
-
-class PCATransform:
     
-    def __init__(self):
-        pass
