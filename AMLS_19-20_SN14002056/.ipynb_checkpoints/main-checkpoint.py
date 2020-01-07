@@ -1,5 +1,5 @@
 from A1.A1 import A1
-from Datasets.DataPreprocessing import DataPreprocessing, Rgb2Grayscale, HogTransform, PCATransform
+from Datasets.DataPreprocessing import DataPreprocessing, Rgb2Grayscale, HogTransform
 from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
 import time
@@ -65,41 +65,35 @@ pca = PCA(.95)
 A1_start_time = time.time()
 
 
-gender_data_input_grayed = grayTransform.transform(gender_data_train[0])
-gender_data_input_HOGged = hog.transform(gender_data_input_grayed)
-x_train_gender_scaled = scaler.fit_transform(gender_data_input_HOGged)
+# gender_data_input_grayed = grayTransform.transform(gender_data_train[0])
+# gender_data_input_HOGged = hog.transform(gender_data_input_grayed)
+# x_train_gender_scaled = scaler.fit_transform(gender_data_input_HOGged)
 
 # pca.fit(x_train_gender_scaled)
 
 # x_train_gender_scaled = pca.transform(x_train_gender_scaled)
 # x_train_gender_prepared_PCA = x_train_gender_scaled
-y_train_gender = gender_data_train[1]
 
 
 ## Testing data
 
 
-gender_data_test_grayed = grayTransform.transform(gender_data_test[0])
-gender_data_test_HOGged = hog.transform(gender_data_test_grayed)
-x_test_gender_scaled = scaler.fit_transform(gender_data_test_HOGged)
+# gender_data_test_grayed = grayTransform.transform(gender_data_test[0])
+# gender_data_test_HOGged = hog.transform(gender_data_test_grayed)
+# x_test_gender_scaled = scaler.fit_transform(gender_data_test_HOGged)
 
 
 # x_test_gender_prepared_PCA = pca.transform(x_test_gender_scaled)
-# print(x_test_gender_prepared_PCA)
-# print(len(x_test_gender_prepared_PCA))
-y_test_gender = gender_data_test[1]
-x_train = x_train_gender_scaled
-x_test = x_test_gender_scaled
 
-# model_A1 = A1(x_train_gender_scaled, y_train_gender, x_test_gender_scaled, y_test_gender, 'linear')
-model_A1 = A1(x_train, y_train_gender, x_test, y_test_gender, 'linear')
+x_train = gender_data_train[0]
+x_test = gender_data_test[0]
+y_train = gender_data_train[1]
+y_test = gender_data_test[1]
 
 
-acc_A1_train = model_A1.pipeline()
+model_A1 = A1(x_train, y_train, x_test, y_test)
 
-# acc_A1_train = model_A1.train(args...) # Train model based on the training set (you should fine-tune your model based on validation set.)
-
-acc_A1_test = model_A1.prediction()   # Test model based on the test set.
+acc_A1_test = model_A1.prediction()
 
 time_taken = time.time() - A1_start_time
 time_taken = round(time_taken, 2)
