@@ -33,13 +33,17 @@ class A2:
 
     
     def train_specific(self, model):
+                
+        """ The train_specific function was written to gather results/plots for specific models to easily compare against each other """
+
+        """ Instantiated the transformer classes that I'll use in this function """
         
         grayTransform = Rgb2Grayscale()
         hog = HogTransform()
         scaler = StandardScaler()
         pca = PCA(.95)
-        
-        """ The train_specific function was written to gather results/plots for specific models to easily compare against each other """
+
+        """ Manual data processing for specific training task when I do not require for data to go through Pipeline """
         
         gender_data_input_grayed = grayTransform.transform(self.X_train)
         gender_data_input_HOGged = hog.transform(gender_data_input_grayed)
@@ -53,19 +57,24 @@ class A2:
         gender_data_test_grayed = grayTransform.transform(self.X_test)
         gender_data_test_HOGged = hog.transform(gender_data_test_grayed)
         x_test_gender_scaled = scaler.fit_transform(gender_data_test_HOGged)
-
-
         x_test_gender_prepared_PCA = pca.transform(x_test_gender_scaled)
+        
+        """ Input Training Dataset and Test Dataset are computed  """
+
         
         print("-----------------------------------------------------------------------------------------------------")
         print("Training the dataset on " + model + " SVM using the Stochastic Gradient Descent optimiser")
         print("-----------------------------------------------------------------------------------------------------")
+        """ Linear Regression using SGD used here  """
 
         if model == 'linear':
             sgd_clf = SGDClassifier(random_state=42, loss = 'hinge', max_iter=1000, n_jobs = -1)
             sgd_clf.fit(x_train_gender_prepared_PCA, self.Y_train)
 
             return sgd_clf
+        
+        
+        """ Logistic Regression using SGD used here  """
         
         if model == 'logistic':
             sgd_clf = SGDClassifier(random_state=42, tol=1e-1, loss = 'log', max_iter=1000, n_jobs = -1)
@@ -83,9 +92,9 @@ class A2:
             plt.ylabel('True Positive Rate')
             # show the legend
             plt.legend()
-            plt.title('A1: ROC Curve of ' + model + ' Regression using SGD')
+            plt.title('A2: ROC Curve of ' + model + ' Regression using SGD')
             # show the plot
-            with open('A1/' + model + '_test.png', 'wb') as f:
+            with open('A2/' + model + '_test.png', 'wb') as f:
                 plt.savefig(f)
     
     
@@ -103,7 +112,9 @@ class A2:
 
         y_test_pred = loaded_model.predict(self.X_test)
         accuracy_score = 100*np.sum(y_test_pred == self.Y_test)/len(self.Y_test)
-        print('Accuracy: ' + str(accuracy_score) + '%')
+        accuracy_score = round(accuracy_score, 1)
+        print('Test accuracy: ' + str(accuracy_score) + '%')
+        return accuracy_score
         
     
     def train(self):
@@ -112,7 +123,7 @@ class A2:
         """ After transformation, we move to the classify stage where the respective classifiers are used to train the data sequentially.  """
 
                 
-        A1Pipeline = Pipeline([
+        A2Pipeline = Pipeline([
             ('toGray', Rgb2Grayscale()),
             ('toHog', HogTransform()),
             ('toScale', StandardScaler()),
@@ -121,8 +132,8 @@ class A2:
         ])
         
         
-        
-        """ After transformation, we move to the classify stage where the respective classifiers are used to train the data sequentially.  """
+        """ Have a variety of classifiers to train the dataset against. Each Classifier goes through the Pipeline process """
+        """ Pipeline process makes it much more efficient to train the datasets without having to manually go through the data each time """
 
         param_grid = [
             {
@@ -136,18 +147,26 @@ class A2:
             }
         ]
         
+        """ GridSearch uses the Pipeline and uses Cross Validation to go through the classifiers and train the model on validation sets """
+        """ Enabled verbose = 50 in GridSearch so detailed information can be found as each model is being trained during the script """
         
-        grid_search = GridSearchCV(A1Pipeline,
+        grid_search = GridSearchCV(A2Pipeline,
                            param_grid,
                            cv=5,
                            n_jobs=-1,
                            scoring='accuracy',
                            verbose=50,
                            return_train_score=True)        
+
         
+        """ Fits the best model that it was able to train on the dataset """
+
         grid_res = grid_search.fit(self.X_train, self.Y_train)
-        best_score = grid_res.best_score_ 
-        
+
+        train_accuracy = float(grid_res.best_score_) * 100
+        train_accuracy = round(train_accuracy, 1)
+        print("Train accuracy: " + str(train_accuracy) + "%")
+
         print("-----------------------------------------------------------------------------------------------------")
         print("Completed training pipeline with cross-fold validation")
         print("-----------------------------------------------------------------------------------------------------")
@@ -157,12 +176,10 @@ class A2:
         print("Best parameters: ")
         print(grid_res.best_params_)
         print("-----------------------------------------------------------------------------------------------------")
-        print("Best score achieved: ")
-        print(best_score)
+
         
-        """ Save the best model into a file to load into prediction function """
-        
+        """ Save the best model into a file to load into prediction function """        
         with open('A2/best_model_A2.sav', 'wb') as f:
             pickle.dump(grid_res, f)
 
-        return grid_res
+        return train_accuracy
