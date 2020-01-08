@@ -94,7 +94,7 @@ class A2:
         
         """ Prediction function to use the saved pickle model from the train function. Tests on the test dataset """
 
-        with open('A1/best_model_A1.sav', 'rb') as f:
+        with open('A2/best_model_A2.sav', 'rb') as f:
             loaded_model = pickle.load(f)
 
         print("-----------------------------------------------------------------------------------------------------")
@@ -127,12 +127,11 @@ class A2:
         param_grid = [
             {
                 'classify': [
-                    SGDClassifier(random_state=42, max_iter=1000, tol=1e-1),
-                    SGDClassifier(random_state=42, max_iter=1000, tol=1e-2),
-                    SGDClassifier(random_state=42, max_iter=1000, tol=1e-3),
-                    svm.SVC(kernel='rbf', C=1, probability=True),
-                    svm.SVC(kernel='rbf', C=10),
-                    svm.SVC(kernel='rbf', C=100)
+                    SGDClassifier(random_state=42, max_iter=1000, alpha=1e-1),
+                    SGDClassifier(random_state=42, max_iter=1000, alpha=1e-2),
+                    SGDClassifier(random_state=42, max_iter=1000, alpha=1e-3),
+                    SGDClassifier(random_state=42, max_iter=1000, alpha=1),
+                    SGDClassifier(random_state=42, max_iter=1000, alpha=10)
                  ]
             }
         ]
@@ -140,7 +139,7 @@ class A2:
         
         grid_search = GridSearchCV(A1Pipeline,
                            param_grid,
-                           cv=2,
+                           cv=5,
                            n_jobs=-1,
                            scoring='accuracy',
                            verbose=50,
@@ -163,7 +162,7 @@ class A2:
         
         """ Save the best model into a file to load into prediction function """
         
-        with open('A1/best_model_A1.sav', 'wb') as f:
+        with open('A2/best_model_A2.sav', 'wb') as f:
             pickle.dump(grid_res, f)
 
         return grid_res
