@@ -83,9 +83,9 @@ class A2:
             plt.ylabel('True Positive Rate')
             # show the legend
             plt.legend()
-            plt.title('A1: ROC Curve of ' + model + ' Regression using SGD')
+            plt.title('A2: ROC Curve of ' + model + ' Regression using SGD')
             # show the plot
-            with open('A1/' + model + '_test.png', 'wb') as f:
+            with open('A2/' + model + '_test.png', 'wb') as f:
                 plt.savefig(f)
     
     
@@ -112,7 +112,7 @@ class A2:
         """ After transformation, we move to the classify stage where the respective classifiers are used to train the data sequentially.  """
 
                 
-        A1Pipeline = Pipeline([
+        A2Pipeline = Pipeline([
             ('toGray', Rgb2Grayscale()),
             ('toHog', HogTransform()),
             ('toScale', StandardScaler()),
@@ -137,7 +137,7 @@ class A2:
         ]
         
         
-        grid_search = GridSearchCV(A1Pipeline,
+        grid_search = GridSearchCV(A2Pipeline,
                            param_grid,
                            cv=5,
                            n_jobs=-1,
