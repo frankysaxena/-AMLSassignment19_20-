@@ -1,35 +1,65 @@
-from sklearn.model_selection import train_test_split
 import pandas as pd
 import cv2
 import numpy as np
 
 from sklearn.base import BaseEstimator, TransformerMixin
-
+from sklearn.model_selection import train_test_split
 from sklearn.linear_model import SGDClassifier
 from sklearn.decomposition import PCA
-
-from sklearn.model_selection import cross_val_predict
 from sklearn.preprocessing import StandardScaler
-from skimage import color
 
+from skimage import color
 from skimage.feature import hog
 from skimage.transform import rescale
+
+""" Importing all necessary libraries for data processing """
 
 
 class DataPreprocessing:
     
     def __init__(self, path, dataset):
+        
+        """ This class object requires the instantiation of the path to the data and the specific dataset. We recreate the object for different assignment tasks. """
+        """ Ensures reusability of the code since same class can be used for different tasks """
+
         self.path = path
         self.dataset = dataset        
     
     def get_raw_dataframe(self, path, dataset):
+        
+        """ Using a simple pandas read_csv import to extract labels from tab-separated-value dataset """
+        
         return pd.read_csv(self.path + '/Datasets/original_dataset_AMLS_19-20/' + self.dataset + '/labels.csv', sep='\t')
 
+    
     def convert_img_to_vec(self, img_file):
+        
+        """ Utilised OpenCV2 library to read the image file and convert it into RGBA channels """
+        
         img = cv2.imread(img_file, cv2.IMREAD_UNCHANGED)
         return img
     
+    
+    def convert_image_to_vector_and_resize(self, img_file):
+        
+        """ Resizing function specifically used for B task since images were 500px by 500px """
+        """ And so needed to be resized to much smaller to be able to compute models much more quickly """
+        """ Comparison of image quality is written up in the report. """
+        """ 35% seemed to be large enough to distinguish key features, but also small enough to not overflow RAM when matrices are computed """
+        
+        img = cv2.imread(img_file, cv2.IMREAD_UNCHANGED)
+        scale_percent = 35 # percent of original size
+        width = int(img.shape[1] * scale_percent / 100)
+        height = int(img.shape[0] * scale_percent / 100)
+        dim = (width, height)
+        # resize image
+        resized_img = cv2.resize(img, dim, interpolation = cv2.INTER_AREA)
+        return resized_img
+    
     def df_to_vec(self, path, dataset):
+        
+        """ This method takes the raw dataframe of the dataset and uses the specific image file to feed into the image converter methods above. """
+        
         vec_Array = []
         path_to_img_dir = self.path+'/Datasets/original_dataset_AMLS_19-20/'+self.dataset+'/img/'
         
@@ -46,11 +76,14 @@ class DataPreprocessing:
             return vec_Array
         
         if self.dataset == 'cartoon_set':
+            
+            """Calling a different image to vector converter function here to make sure we resize the large PNG image"""
+            
             print("----------------------------------------------------")
             print("Converting raw images to pixel info in Cartoon dataset...")
             
             for img_name in df['file_name']:
-                img_vec = np.array(self.convert_img_to_vec(path_to_img_dir + img_name))
+                img_vec = np.array(self.convert_image_to_vector_and_resize(path_to_img_dir + img_name))
                 vec_Array.append(img_vec)
         
             return vec_Array
@@ -58,6 +91,8 @@ class DataPreprocessing:
         
     def split_train_test(self, task):
         
+        """Taking the datasets that have been computed and then convert them into the respective numpy arrays"""
+
         vector_array = self.df_to_vec(self.path, self.dataset)
         df = self.get_raw_dataframe(self.path, self.dataset)
 
@@ -68,8 +103,10 @@ class DataPreprocessing:
         print("Length of input pixel list: " + str(len(x_dataset)))
         print("Length of output labels list: " + str(len(y_dataset)))
         print("-----------------------DONE-------------------------")
-
         
+        """Split the data into testing and training sets"""
+        """As mentioned, validation set is computed during cross-validation, GridSearch tasks"""
+
         x, x_test, y, y_test = train_test_split(
             x_dataset,
             y_dataset,
@@ -105,6 +142,7 @@ class HogTransform(BaseEstimator, TransformerMixin):
     def __init__(self, y=None, orientations=9, pixels_per_cell=(8, 8), cells_per_block=(3, 3), block_norm='L2-Hys'):
         
         """ HOG transform as one of the choices for feature extraction. Takes a grayscale image vector as the input """
+        
         self.y = y
         self.orientations = orientations
         self.pixels_per_cell = pixels_per_cell
@@ -131,5 +169,3 @@ class HogTransform(BaseEstimator, TransformerMixin):
             return np.array([local_hog(img) for img in gray_vector])
         except:
             return np.array([local_hog(img) for img in gray_vector])
-        
-    
