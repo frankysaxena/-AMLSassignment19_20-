@@ -6,22 +6,22 @@ Models have been saved as distinct files which were the last best trained models
 ### Files
 
 To run their respective tasks:
-    * A1/A1.py
-    * A2/A2.py
-    * B1/B1.py
-    * B2/B2.py
+* A1/A1.py
+* A2/A2.py
+* B1/B1.py
+* B2/B2.py
 
 For data pre-processing and loading data for the classes:
-    * Datasets/DataPreprocessing.py
+* Datasets/DataPreprocessing.py
 
 For ad-hoc testing and gathering graph data results for both Tasks A and B:
-    * TaskAmodel_testing_notebook.ipynb
-    * Taskbmodel_testing_notebook.ipynb
+* TaskAmodel_testing_notebook.ipynb
+* Taskbmodel_testing_notebook.ipynb
 
 You can run the Jupyter notebooks as is to display results. These notebooks were essentially my 'working out' while I was going through the different models and tasks.
 
 Main program execution file:
-    * main.py
+* main.py
     
 Total execution time should be about 10-15 minutes.
 
@@ -31,12 +31,12 @@ Total execution time should be about 10-15 minutes.
 
 Please ensure you have these dependencies:
 
-pandas
-numpy
-scikit-learn
-cv2
-skimage
-Pillow-6.2.2 (latest Pillow will be fine too)
+`pandas`
+`numpy`
+`scikit-learn`
+`cv2`
+`skimage`
+`Pillow-6.2.2` (latest Pillow will be fine too)
 
 ### Run
 
