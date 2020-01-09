@@ -45,10 +45,10 @@ This code has been tested on Python 3.7+. It should work fine on any Python3 fla
 Make sure you have set Python 3 as default.
 Navigate to your preferred directory
 
-1. git clone << this repository >>
-2. virtualenv venv 
-3. pip install -r requirements.py
-4. python main.py
+1. ` git clone << this repository >>`
+2. `virtualenv venv` 
+3. `pip install -r requirements.py`
+4. `python main.py`
 
 Or if you already have all the above dependencies installed, then just go ahead and run python main.py
 
