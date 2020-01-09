@@ -34,9 +34,12 @@ Please ensure you have these dependencies:
 `pandas`
 `numpy`
 `scikit-learn`
-`cv2`
-`skimage`
+`opencv-python`
+`parfit`
+`scikit-image`
 `Pillow-6.2.2` (latest Pillow will be fine too)
+
+These have all been listed in the `requirements.txt` file
 
 ### Run
 
@@ -46,11 +49,13 @@ Make sure you have set Python 3 as default.
 Navigate to your preferred directory
 
 1. ` git clone << this repository >>`
-2. `virtualenv venv`
-3. `source venv bin activate`
+2. `source venv bin activate`
+3. `cd AMLS_19-20_SN14002056`
 4. `pip install -r requirements.py`
-5. `python main.py`
+5. `vi  main.py` 
+6. Edit the `path_to_dir` variable accordingly
+7. `python main.py`
 
-Or if you already have all the above dependencies installed, then just go ahead and run python main.py
+Or if you already have all the above dependencies installed, then just change the path directory  and run python main.py
 
 

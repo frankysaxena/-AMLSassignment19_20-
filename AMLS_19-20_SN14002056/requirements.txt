@@ -1,6 +1,7 @@
 pandas
 numpy
 scikit-learn
-cv2
-skimage
-Pillow-6.2.2
+opencv-python
+parfit
+scikit-image
+Pillow
