@@ -99,7 +99,7 @@ class A2:
     
     
     
-    def prediction(self):
+    def prediction(self, x_unseen, y_unseen):
         
         """ Prediction function to use the saved pickle model from the train function. Tests on the test dataset """
 
@@ -110,8 +110,8 @@ class A2:
         print("Completed training. Predicting on test dataset... ")
         print("-----------------------------------------------------------------------------------------------------")
 
-        y_test_pred = loaded_model.predict(self.X_test)
-        accuracy_score = 100*np.sum(y_test_pred == self.Y_test)/len(self.Y_test)
+        y_test_pred = loaded_model.predict(x_unseen)
+        accuracy_score = 100*np.sum(y_test_pred == y_unseen)/len(y_unseen)
         accuracy_score = round(accuracy_score, 1)
         print('Test accuracy: ' + str(accuracy_score) + '%')
         return accuracy_score

@@ -51,15 +51,19 @@ cartoon_data = DataPreprocessing(path_to_dir, cartoon)
 
 print("------------------TASK A1 DATASET-------------------")
 gender_data_train, gender_data_test = celeb_data.split_train_test(gender)
+gender_test = celeb_data.unseen_testset(gender)
 
 print("------------------TASK A2 DATASET-------------------")
 emotion_data_train, emotion_data_test = celeb_data.split_train_test(emotion)
+emotion_test = celeb_data.unseen_testset(emotion)
 
 print("------------------TASK B1 DATASET-------------------")
 cartoon_face_train, cartoon_face_test =  cartoon_data.split_train_test(face)
+face_test = cartoon_data.unseen_testset(face)
 
 print("------------------TASK B2 DATASET-------------------")
 cartoon_eye_train, cartoon_eye_test =  cartoon_data.split_train_test(eye)
+eye_test = cartoon_data.unseen_testset(eye)
 
 
 # # ======================================================================================================================
@@ -85,11 +89,14 @@ y_train = gender_data_train[1]
 x_test = gender_data_test[0]
 y_test = gender_data_test[1]
 
+# Unseen testing data
+x_unseen_test = gender_test[0]
+y_unseen_test = gender_test[1]
 
 model_A1 = A1(x_train, y_train, x_test, y_test)
 
 acc_A1_train = model_A1.train()
-acc_A1_test = model_A1.prediction()
+acc_A1_test = model_A1.prediction(x_unseen_test, y_unseen_test) # Predict on separate unseen test data
 
 time_taken = time.time() - A1_start_time
 time_taken = round(time_taken, 2)
@@ -118,10 +125,14 @@ y_train = emotion_data_train[1]
 x_test = emotion_data_test[0]
 y_test = emotion_data_test[1]
 
+# Unseen testing data
+x_unseen_test = emotion_test[0]
+y_unseen_test = emotion_test[1]
+
 model_A2 = A2(x_train, y_train, x_test, y_test)
 
 acc_A2_train = model_A2.train()
-acc_A2_test = model_A2.prediction()
+acc_A2_test = model_A2.prediction(x_unseen_test, y_unseen_test) # Predict on separate unseen test data
 
 time_taken = time.time() - A2_start_time
 time_taken = round(time_taken, 2)
@@ -149,10 +160,14 @@ y_train = cartoon_face_train[1]
 x_test = cartoon_face_test[0]
 y_test = cartoon_face_test[1]
 
+# Unseen testing data
+x_unseen_test = face_test[0]
+y_unseen_test = face_test[1]
+
 model_B1 = B1(x_train, y_train, x_test, y_test)
 
 acc_B1_train = model_B1.train()
-acc_B1_test = model_B1.prediction()
+acc_B1_test = model_B1.prediction(x_unseen_test, y_unseen_test) # Predict on separate unseen test data
 
 time_taken = time.time() - B1_start_time
 time_taken = round(time_taken, 2)
@@ -182,10 +197,14 @@ y_train = cartoon_eye_train[1]
 x_test = cartoon_eye_test[0]
 y_test = cartoon_eye_test[1]
 
+# Unseen testing data
+x_unseen_test = eye_test[0]
+y_unseen_test = eye_test[1]
+
 model_B2 = B2(x_train, y_train, x_test, y_test)
 
 acc_B2_train = model_B2.train()
-acc_B2_test = model_B2.prediction()
+acc_B2_test = model_B2.prediction(x_unseen_test, y_unseen_test) # Predict on separate unseen test data
 
 time_taken = time.time() - B2_start_time
 time_taken = round(time_taken, 2)

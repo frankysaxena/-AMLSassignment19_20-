@@ -36,7 +36,7 @@ class B1:
         self.Y_test = Y_test
     
     
-    def prediction(self):
+    def prediction(self, x_unseen, y_unseen):
         
         """ Prediction function to use the saved pickle model from the train function. Tests on the test dataset """
 
@@ -47,9 +47,9 @@ class B1:
         print(" Predicting on test dataset... ")
         print("-----------------------------------------------------------------------------------------------------")
 
-        X_test = np.reshape(self.X_test, (2000, 122500))
+        X_test = np.reshape(x_unseen, (2500, 122500))
         y_test_pred = loaded_model.predict(X_test)
-        test_accuracy = 100*np.sum(y_test_pred == self.Y_test)/len(self.Y_test)
+        test_accuracy = 100*np.sum(y_test_pred == y_unseen)/len(y_unseen)
         test_accuracy = round(test_accuracy, 1)
         print('Test accuracy: ' + str(test_accuracy) + '%')
         return test_accuracy

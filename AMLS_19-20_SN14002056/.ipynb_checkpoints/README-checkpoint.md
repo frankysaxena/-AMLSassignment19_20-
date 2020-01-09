@@ -47,7 +47,7 @@ Navigate to your preferred directory
 
 1. ` git clone << this repository >>`
 2. `virtualenv venv`
-3. `sourve venv bin activate`
+3. `source venv bin activate`
 4. `pip install -r requirements.py`
 5. `python main.py`
 

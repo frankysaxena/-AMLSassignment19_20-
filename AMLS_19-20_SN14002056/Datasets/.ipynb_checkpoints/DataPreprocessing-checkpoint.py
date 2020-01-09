@@ -121,6 +121,30 @@ class DataPreprocessing:
         return train_data, test_data
 
     
+    def get_raw_test_dataframe(self, path, dataset):
+        
+        """ Using a simple pandas read_csv import to extract labels from tab-separated-value dataset """
+        
+        return pd.read_csv(self.path + '/Datasets/test_dataset_AMLS_19-20/' + self.dataset + '/labels.csv', sep='\t')
+
+    
+    def unseen_testset(self, task):
+        
+        """ Creating a separate function to handle unseen test data """
+        
+        test_vector_array = self.df_to_vec(self.path, self.dataset)
+        test_df = self.get_raw_test_dataframe(self.path, self.dataset)
+        
+        print("----------------------------------------------------")
+        print("Fetching unseen test data for the " + task + " task")
+        print("----------------------------------------------------")
+
+        x_unseen = test_vector_array
+        y_unseen = np.array(test_df[str(task)])
+        
+        unseen_data = (x_unseen, y_unseen)
+        return unseen_data
+    
 class Rgb2Grayscale(BaseEstimator, TransformerMixin):
     
     def __init__(self):
