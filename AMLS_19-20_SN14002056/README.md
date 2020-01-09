@@ -51,7 +51,7 @@ Navigate to your preferred directory
 1. ` git clone << this repository >>`
 2. `source venv bin activate`
 3. `cd AMLS_19-20_SN14002056`
-4. `pip install -r requirements.py`
+4. `pip install -r requirements.txt`
 5. `vi  main.py` 
 6. Edit the `path_to_dir` variable accordingly
 7. `python main.py`
