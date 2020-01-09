@@ -61,6 +61,7 @@ class DataPreprocessing:
         """ This method takes the raw dataframe of the dataset and uses the specific image file to feed into the image converter methods above. """
         
         vec_Array = []
+
         path_to_img_dir = self.path+'/Datasets/original_dataset_AMLS_19-20/'+self.dataset+'/img/'
         
         df = self.get_raw_dataframe(path, dataset)
@@ -126,13 +127,48 @@ class DataPreprocessing:
         """ Using a simple pandas read_csv import to extract labels from tab-separated-value dataset """
         
         return pd.read_csv(self.path + '/Datasets/test_dataset_AMLS_19-20/' + self.dataset + '/labels.csv', sep='\t')
+    
+    
+    
+    def test_df_to_vec(self, path, dataset):
+        
+        """ This method takes the raw dataframe of the dataset and uses the specific image file to feed into the image converter methods above. """
 
+        
+        vec_Array = []
+        
+        path_to_img_dir = self.path+'/Datasets/test_dataset_AMLS_19-20/'+self.dataset+'/img/'
+        
+        dftest = self.get_raw_test_dataframe(path, dataset)
+
+        if self.dataset == 'celeba':
+            print("----------------------------------------------------")
+            print("Converting raw images to pixel info in Celebrity dataset...")
+
+            for img_name in dftest['img_name']:
+                img_vec = np.array(self.convert_img_to_vec(path_to_img_dir + img_name))
+                vec_Array.append(img_vec)
+                
+            return vec_Array
+        
+        if self.dataset == 'cartoon_set':
+            
+            """Calling a different image to vector converter function here to make sure we resize the large PNG image"""
+            
+            print("----------------------------------------------------")
+            print("Converting raw images to pixel info in Cartoon dataset...")
+            
+            for img_name in dftest['file_name']:
+                img_vec = np.array(self.convert_image_to_vector_and_resize(path_to_img_dir + img_name))
+                vec_Array.append(img_vec)
+        
+            return vec_Array
     
     def unseen_testset(self, task):
         
         """ Creating a separate function to handle unseen test data """
         
-        test_vector_array = self.df_to_vec(self.path, self.dataset)
+        test_vector_array = self.test_df_to_vec(self.path, self.dataset)
         test_df = self.get_raw_test_dataframe(self.path, self.dataset)
         
         print("----------------------------------------------------")
@@ -143,6 +179,9 @@ class DataPreprocessing:
         y_unseen = np.array(test_df[str(task)])
         
         unseen_data = (x_unseen, y_unseen)
+        print("----------------------------------------------------")
+        print("Completed ")
+        print("----------------------------------------------------")
         return unseen_data
     
 class Rgb2Grayscale(BaseEstimator, TransformerMixin):

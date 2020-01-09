@@ -138,11 +138,11 @@ class A2:
         param_grid = [
             {
                 'classify': [
-                    SGDClassifier(random_state=42, max_iter=1000, alpha=1e-1),
+#                     SGDClassifier(random_state=42, max_iter=1000, alpha=1e-1),
                     SGDClassifier(random_state=42, max_iter=1000, alpha=1e-2),
-                    SGDClassifier(random_state=42, max_iter=1000, alpha=1e-3),
-                    SGDClassifier(random_state=42, max_iter=1000, alpha=1),
-                    SGDClassifier(random_state=42, max_iter=1000, alpha=10)
+#                     SGDClassifier(random_state=42, max_iter=1000, alpha=1e-3),
+#                     SGDClassifier(random_state=42, max_iter=1000, alpha=1),
+#                     SGDClassifier(random_state=42, max_iter=1000, alpha=10)
                  ]
             }
         ]

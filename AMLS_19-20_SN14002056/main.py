@@ -25,6 +25,7 @@ path_to_dir = '/home/fsaxena/amls/AMLSassignment19_20/AMLS_19-20_SN14002056'
 
 celeb = 'celeba'
 cartoon = 'cartoon_set'
+
 taskList = [
             'gender',
             'smiling',
@@ -52,6 +53,7 @@ cartoon_data = DataPreprocessing(path_to_dir, cartoon)
 print("------------------TASK A1 DATASET-------------------")
 gender_data_train, gender_data_test = celeb_data.split_train_test(gender)
 gender_test = celeb_data.unseen_testset(gender)
+
 
 print("------------------TASK A2 DATASET-------------------")
 emotion_data_train, emotion_data_test = celeb_data.split_train_test(emotion)
@@ -224,3 +226,4 @@ data = [['Task', 'Train Accuracy (%)', 'Test Accuracy (%)'],
 col_width = max(len(word) for row in data for word in row) + 2  # padding
 for row in data:
     print("".join(word.ljust(col_width) for word in row))
+    
